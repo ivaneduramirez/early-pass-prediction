@@ -10,7 +10,7 @@
 <header class="cabecera">
   <h1>Predicción temprana de aprobación por asignatura</h1>
   <p class="sub">Al cerrar el <strong>primer parcial</strong>, el modelo estima cuántos estudiantes aprobarán
-    al final del período — y con ello cuántos habrá que atender el período siguiente.
+    al final del período — y con ello cuántos repetirán por reprobación el período siguiente.
     Demo con datos reales <strong>anonimizados</strong> (sin nombres; cédulas enmascaradas).</p>
 </header>
 
@@ -31,8 +31,30 @@
 <div id="aviso-periodo" class="aviso" role="status" aria-live="polite" hidden></div>
 <div id="aviso-carga" class="aviso alerta" role="status" aria-live="polite" hidden></div>
 
+<section id="vista-carrera" hidden>
+  <div class="titulo-asig">
+    <h2 id="vc-titulo"></h2>
+    <p id="vc-meta" class="sub"></p>
+  </div>
+  <div class="tabla-scroll">
+    <table id="tabla-carrera">
+      <thead>
+        <tr>
+          <th>Asignatura</th>
+          <th class="num">Matriculados</th>
+          <th class="num">Paralelos</th>
+          <th class="num">% aprobación</th>
+          <th class="num">Repetidores esp.</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</section>
+
 <main id="panel" hidden>
   <div class="titulo-asig">
+    <p id="volver-carrera" class="volver" hidden></p>
     <h2 id="t-asig"></h2>
     <p id="t-meta" class="sub"></p>
   </div>
@@ -75,6 +97,11 @@
     </article>
   </section>
 
+  <section class="historico-seccion" id="historico" hidden>
+    <h3>Histórico de la asignatura <span class="sub-inline">— matriculados por período (nº de paralelos sobre cada barra)</span></h3>
+    <div id="historico-chart" class="historico-chart"></div>
+  </section>
+
   <aside class="pitch">
     <strong>¿Por qué importa?</strong> Esta estimación existe <em>meses antes del cierre del período</em>:
     permite planificar paralelos, cupos y carga docente del siguiente período con anticipación,
@@ -97,8 +124,8 @@
 
 <footer class="pie">
   <p>Modelo: gradient boosting sobre notas del 1er parcial + contexto del curso + tasa histórica de la asignatura + nivel.
-     Validado con backtest rodante en 10 períodos (2021-1 → 2025-2): error mediano 1.1 pp por asignatura, 82% de asignaturas dentro de ±5 pp;
-     ±0.6 pp a nivel institucional. Repetidores esperados el próximo período = reprobados esperados × 0,49
+     Validado con backtest rodante en 10 períodos (2021-1 → 2025-2): error mediano 1,1 pp por asignatura, 82% de asignaturas dentro de ±5 pp;
+     ±0,6 pp a nivel institucional. Repetidores esperados el próximo período = reprobados esperados × 0,49
      (tasa de rematrícula de la asignatura, medida en los datos). Los períodos cerrados se predicen con modelos entrenados únicamente con ciclos anteriores.</p>
 </footer>
 

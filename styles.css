@@ -119,7 +119,7 @@ h3 { font-size: 0.82rem; font-weight: 600; color: var(--tinta-2); margin: 0 0 8p
 }
 .etq { color: var(--tinta-suave); text-align: right; }
 .val { color: var(--tinta-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.pista { position: relative; height: 12px; background: var(--pista); border-radius: 6px; }
+.pista { position: relative; height: 12px; background: var(--pista); border-radius: 6px; overflow: hidden; }
 .barra { height: 100%; border-radius: 6px; min-width: 2px; max-width: 100%; }
 .barra.pred { background: var(--azul); }
 .barra.real { background: var(--gris-barra); }
@@ -175,9 +175,44 @@ td.num { font-variant-numeric: tabular-nums; }
 
 .pie { margin-top: 28px; color: var(--tinta-suave); font-size: 0.75rem; border-top: 1px solid var(--linea); padding-top: 14px; padding-bottom: 40px; }
 
+/* enlace volver a la malla */
+.volver { margin: 0 0 6px; font-size: 0.82rem; font-weight: 600; color: var(--azul-chip); cursor: pointer; display: inline-block; }
+.volver:hover { text-decoration: underline; }
+
+/* vista de carrera (malla por nivel) */
+#vista-carrera { margin-bottom: 8px; }
+#tabla-carrera .muted { color: var(--tinta-suave); font-weight: 400; font-size: 0.9em; }
+#tabla-carrera .nivel-fila td {
+  background: var(--marino); color: var(--marino-texto);
+  font-weight: 700; font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase;
+  padding: 6px 14px; position: static;
+}
+#tabla-carrera .asig-fila { cursor: pointer; }
+#tabla-carrera .asig-fila td:first-child { font-weight: 500; }
+#tabla-carrera .asig-fila:hover td { background: var(--azul-tenue); }
+#tabla-carrera .asig-fila:focus-visible { outline: 2px solid var(--azul); outline-offset: -2px; }
+
+/* mini-gráfico histórico de la asignatura */
+.historico-seccion { margin: 4px 0 18px; }
+.historico-seccion h3 { margin-bottom: 10px; }
+.historico-chart {
+  display: flex; align-items: flex-end; gap: 10px;
+  padding: 10px 14px 8px; border: 1px solid var(--borde); border-radius: 12px;
+  background: var(--superficie); box-shadow: var(--sombra); overflow-x: auto;
+}
+.h-col { flex: 1 1 0; min-width: 44px; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.h-par { font-size: 0.7rem; font-weight: 700; color: var(--azul-chip); }
+.h-barra-wrap { width: 100%; height: 96px; display: flex; align-items: flex-end; justify-content: center; }
+.h-barra { width: 60%; max-width: 34px; background: var(--azul); border-radius: 5px 5px 0 0; min-height: 3px; }
+.h-col.actual .h-barra { background: var(--marino); }
+.h-col.actual .h-p { color: var(--marino); font-weight: 700; }
+.h-m { font-size: 0.78rem; font-weight: 600; color: var(--tinta); font-variant-numeric: tabular-nums; }
+.h-p { font-size: 0.68rem; color: var(--tinta-suave); }
+
 @media (max-width: 560px) {
   h1 { font-size: 1.25rem; }
   .hero { font-size: 1.8rem; }
   .controles label { flex-basis: 100%; }
   th, td { padding: 7px 10px; }
+  .h-col { min-width: 38px; }
 }
