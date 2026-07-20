@@ -197,26 +197,25 @@ function mostrarVistaCarrera() {
       const anio = ANIO_DE_NIVEL(a.nivel);
       const trh = document.createElement("tr");
       trh.className = "nivel-fila";
-      trh.innerHTML = `<td colspan="5">${a.nivel ?? "SIN NIVEL"}${anio ? ` · ${anio}.º año` : ""}</td>`;
+      trh.innerHTML = `<th colspan="5" scope="colgroup">${a.nivel ?? "SIN NIVEL"}${anio ? ` · ${anio}.º año` : ""}</th>`;
       tb.appendChild(trh);
     }
     const rep = Math.round(a.reprob_esp * 0.49);
     const aprobCell = d.cerrado && a.real_pct != null
       ? `${fmt(a.pred_pct)}% <span class="muted">pred</span> · ${fmt(a.real_pct)}% <span class="muted">real</span>`
       : `${fmt(a.pred_pct)}% <span class="muted">pred</span>`;
+    // fila normal (semántica de tabla intacta); el nombre es un <button> real
+    // que aporta foco/teclado/nombre accesible. La fila entera queda clicable
+    // para el ratón; el click del botón burbujea al único listener de la fila.
     const tr = document.createElement("tr");
     tr.className = "asig-fila";
-    tr.tabIndex = 0;
-    tr.setAttribute("role", "button");
     tr.innerHTML = `
-      <td>${a.asignatura}</td>
+      <td><button type="button" class="link-asig">${a.asignatura}</button></td>
       <td class="num">${fmt(a.n_matric, 0)}</td>
       <td class="num">${fmt(a.paralelos, 0)}</td>
       <td class="num">${aprobCell}</td>
       <td class="num">${fmt(rep, 0)}</td>`;
-    const abrir = () => seleccionar(a, true);
-    tr.addEventListener("click", abrir);
-    tr.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); abrir(); } });
+    tr.addEventListener("click", () => seleccionar(a, true));
     tb.appendChild(tr);
   }
 }
