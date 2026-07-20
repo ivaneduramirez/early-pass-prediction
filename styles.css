@@ -117,7 +117,7 @@ h3 { font-size: 0.85rem; font-weight: 600; color: var(--tinta-2); margin: 0 0 6p
 }
 
 .tabla-seccion h3 { margin-bottom: 8px; }
-.tabla-scroll { overflow-x: auto; border: 1px solid var(--borde); border-radius: 10px; background: var(--superficie); }
+.tabla-scroll { overflow: auto; max-height: 65vh; border: 1px solid var(--borde); border-radius: 10px; background: var(--superficie); }
 table { border-collapse: collapse; width: 100%; font-size: 0.85rem; }
 th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--linea); white-space: nowrap; }
 th { color: var(--tinta-suave); font-weight: 600; font-size: 0.75rem; position: sticky; top: 0; background: var(--superficie); }
