@@ -50,6 +50,7 @@ async function init() {
     $("inp-asig").value = "";
     mostrarVistaCarrera();
     $("vista-carrera").scrollIntoView({ block: "start", behavior: "smooth" });
+    $("vc-titulo").focus();  // no dejar el foco en el botón que se acaba de ocultar
   });
 
   await cambiarPeriodo(Number(sel.value));
@@ -179,6 +180,7 @@ const ordenNivel = (a) => (NIVEL_ORD[a?.nivel] ?? 99);
 function mostrarVistaCarrera() {
   const d = estado.datos[estado.periodo];
   $("panel").hidden = true;
+  $("aviso-carga").hidden = true;  // era específico de la asignatura del detalle
   const vc = $("vista-carrera");
   const asigs = d.asignaturas.filter(a => a.carrera === estado.carrera)
     .sort((x, y) => ordenNivel(x) - ordenNivel(y) || x.asignatura.localeCompare(y.asignatura, "es"));
@@ -254,8 +256,10 @@ function seleccionar(a, desdeCarrera) {
   $("inp-asig").value = a.asignatura;
   $("vista-carrera").hidden = true;
   $("panel").hidden = false;
+  // el retorno a la malla existe siempre que haya una carrera filtrada,
+  // sin importar si se llegó por la tabla o por el buscador
   const volver = $("volver-carrera");
-  if (desdeCarrera && estado.carrera) {
+  if (estado.carrera) {
     volver.textContent = `‹ Volver a ${estado.carrera}`;
     volver.hidden = false;
   } else volver.hidden = true;

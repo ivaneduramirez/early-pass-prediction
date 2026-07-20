@@ -186,6 +186,7 @@ td.num { font-variant-numeric: tabular-nums; }
 
 /* vista de carrera (malla por nivel) */
 #vista-carrera { margin-bottom: 8px; }
+#vc-titulo:focus { outline: none; }  /* foco programático para anuncio de lector, sin borde visible */
 #tabla-carrera .muted { color: var(--tinta-suave); font-weight: 400; font-size: 0.9em; }
 #tabla-carrera .nivel-fila th {
   background: var(--marino); color: var(--marino-texto);
