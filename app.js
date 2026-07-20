@@ -22,7 +22,10 @@ async function init() {
   }
   sel.value = estado.indice.periodos.find(p => !p.cerrado)?.id ?? estado.indice.periodos[0].id;
   sel.addEventListener("change", () => cambiarPeriodo(Number(sel.value)).catch(mostrarError));
-  $("sel-carrera").addEventListener("change", () => { estado.carrera = $("sel-carrera").value; refrescarLista(); });
+  $("sel-carrera").addEventListener("change", () => {
+    estado.carrera = $("sel-carrera").value;
+    limpiarAsignatura();
+  });
 
   const inp = $("inp-asig");
   inp.addEventListener("input", refrescarLista);
@@ -36,6 +39,14 @@ async function init() {
   });
 
   await cambiarPeriodo(Number(sel.value));
+}
+
+function limpiarAsignatura() {
+  estado.asig = null;
+  $("inp-asig").value = "";
+  $("panel").hidden = true;
+  $("aviso-carga").hidden = true;
+  ocultarLista();
 }
 
 function mostrarError(e) {
@@ -68,25 +79,8 @@ async function cambiarPeriodo(id) {
   for (const c of carreras) selC.appendChild(new Option(c, c));
   if (carreras.includes(estado.carrera)) selC.value = estado.carrera; else { estado.carrera = ""; }
 
-  // mantener la asignatura si existe en el nuevo período (tolerante a espacios)
-  const previa = estado.asig;
-  estado.asig = null;
-  if (previa) {
-    const clave = (s) => s.trim().toLowerCase();
-    const igual = d.asignaturas.find(a =>
-      clave(a.asignatura) === clave(previa.asignatura) && clave(a.carrera) === clave(previa.carrera));
-    if (igual) { seleccionar(igual); return; }
-    $("panel").hidden = true;
-    const aviso = $("aviso-carga");
-    aviso.textContent = `"${previa.asignatura}" no aparece en ${d.nombre}` +
-      (d.cerrado ? " (no se dictó ese período)." : " (aún sin primer parcial registrado o no ofertada).") +
-      " Elige otra asignatura del buscador.";
-    aviso.hidden = false;
-    return;
-  }
-  $("panel").hidden = true;
-  $("inp-asig").value = "";
-  refrescarLista();
+  // al cambiar de período la asignatura se resetea
+  limpiarAsignatura();
 }
 
 const plano = (s) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
