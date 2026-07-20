@@ -111,6 +111,9 @@ function refrescarLista() {
     li.setAttribute("role", "option");
     li.id = `op-${i}`;
     li.innerHTML = `${a.asignatura}<span class="li-meta">${a.carrera} · ${a.n_matric} estudiantes</span>`;
+    // sin esto, el mousedown roba el foco del input, focusout cierra la lista
+    // y el click nunca llega a la opcion
+    li.addEventListener("mousedown", (e) => e.preventDefault());
     li.addEventListener("click", () => { seleccionar(a); ocultarLista(); });
     ul.appendChild(li);
   });
