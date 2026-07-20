@@ -28,8 +28,8 @@
   </label>
 </section>
 
-<div id="aviso-periodo" class="aviso" hidden></div>
-<div id="aviso-carga" class="aviso alerta" hidden></div>
+<div id="aviso-periodo" class="aviso" role="status" aria-live="polite" hidden></div>
+<div id="aviso-carga" class="aviso alerta" role="status" aria-live="polite" hidden></div>
 
 <main id="panel" hidden>
   <div class="titulo-asig">
@@ -69,7 +69,7 @@
     </article>
 
     <article class="tile destacado">
-      <h3>Previstos para el próximo período (<span id="lbl-next"></span>)</h3>
+      <h3>Repetidores esperados el próximo período (<span id="lbl-next"></span>)</h3>
       <p class="hero" id="v-previstos"></p>
       <p class="detalle" id="v-previstos-det"></p>
     </article>
@@ -98,8 +98,8 @@
 <footer class="pie">
   <p>Modelo: gradient boosting sobre notas del 1er parcial + contexto del curso + tasa histórica de la asignatura + nivel.
      Validado con backtest rodante en 10 períodos (2021-1 → 2025-2): error mediano 1.1 pp por asignatura, 82% de asignaturas dentro de ±5 pp;
-     ±0.6 pp a nivel institucional. Previstos del próximo período = nuevos actuales + reprobados esperados × 0.49
-     (tasa de rematrícula medida). Los períodos cerrados se predicen con modelos entrenados únicamente con ciclos anteriores.</p>
+     ±0.6 pp a nivel institucional. Repetidores esperados el próximo período = reprobados esperados × 0,49
+     (tasa de rematrícula de la asignatura, medida en los datos). Los períodos cerrados se predicen con modelos entrenados únicamente con ciclos anteriores.</p>
 </footer>
 
 <script src="app.js"></script>

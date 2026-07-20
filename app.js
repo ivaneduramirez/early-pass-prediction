@@ -58,8 +58,19 @@ function mostrarError(e) {
 async function cambiarPeriodo(id) {
   estado.periodo = id;
   const peticion = ++estado.peticion;
+  const selP = $("sel-periodo"), selC = $("sel-carrera");
   if (!estado.datos[id]) {
-    estado.datos[id] = await cargarJSON(`data/periodo_${id}.json`);
+    // datos aún no cacheados: avisar de la carga y bloquear los selectores
+    limpiarAsignatura();
+    const aviso = $("aviso-periodo");
+    aviso.textContent = "Cargando período…";
+    aviso.hidden = false;
+    selP.disabled = selC.disabled = true;
+    try {
+      estado.datos[id] = await cargarJSON(`data/periodo_${id}.json`);
+    } finally {
+      if (peticion === estado.peticion) selP.disabled = selC.disabled = false;
+    }
   }
   if (peticion !== estado.peticion) return; // llegó tarde: otro período ya fue pedido
   const d = estado.datos[id];
@@ -73,7 +84,6 @@ async function cambiarPeriodo(id) {
   }
 
   const carreras = [...new Set(d.asignaturas.map(a => a.carrera))].sort();
-  const selC = $("sel-carrera");
   selC.innerHTML = "";
   selC.appendChild(new Option("Todas las carreras", ""));
   for (const c of carreras) selC.appendChild(new Option(c, c));
@@ -99,6 +109,8 @@ function refrescarLista() {
   if (document.activeElement !== $("inp-asig")) { ul.hidden = true; return; }
   const lista = asignaturasFiltradas();
   estado.activo = -1;
+  // al reconstruir la lista, ninguna opción está activa: no dejar el id colgando
+  $("inp-asig").removeAttribute("aria-activedescendant");
   ul.innerHTML = "";
   lista.forEach((a, i) => {
     const li = document.createElement("li");
@@ -196,11 +208,14 @@ function seleccionar(a) {
     ? "la asignatura no se dictó en el período anterior"
     : `de ${fmt(a.matric_prev, 0)} matriculados · ${fmt(a.repetidores, 0)} reprobado(s) se rematricularon este período`;
 
-  // tile 4: previstos próximo período
+  // tile 4: repetidores esperados el próximo período (cupos de repetición a prever).
+  // Solo la parte validada del flujo: reprobados esperados × tasa de rematrícula medida.
+  const TASA_REMATRICULA = 0.49;
+  const repetidores_esp = a.reprob_esp * TASA_REMATRICULA;
   $("lbl-next").textContent = d.siguiente ?? "próximo";
-  $("v-previstos").textContent = fmt(a.previstos_next, 0);
+  $("v-previstos").textContent = fmt(repetidores_esp, 0);
   $("v-previstos-det").textContent =
-    `= ${fmt(a.nuevos, 0)} nuevos actuales + ${fmt(a.reprob_esp)} reprobados esperados × 0.49 de rematrícula`;
+    `≈ ${fmt(a.reprob_esp)} reprobados esperados × 0,49 de rematrícula · cupos de repetición a prever`;
 
   // tabla
   $("t-tabla-nota").textContent = d.cerrado
