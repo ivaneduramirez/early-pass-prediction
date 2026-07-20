@@ -31,6 +31,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body {
   margin: 0 auto;
   max-width: 1080px;
@@ -96,7 +97,8 @@ h3 { font-size: 0.85rem; font-weight: 600; color: var(--tinta-2); margin: 0 0 6p
 .detalle { font-size: 0.8rem; color: var(--tinta-2); margin: 0; }
 
 .comparador { margin-top: 10px; display: grid; gap: 6px; }
-.barra-fila { display: grid; grid-template-columns: 58px 1fr 48px; align-items: center; gap: 8px; font-size: 0.75rem; }
+.barra-fila { display: grid; grid-template-columns: 58px 1fr max-content; align-items: center; gap: 8px; font-size: 0.75rem; }
+.val.pendiente { color: var(--tinta-suave); font-style: italic; }
 .etq { color: var(--tinta-suave); text-align: right; }
 .val { color: var(--tinta-2); font-variant-numeric: tabular-nums; }
 .pista { position: relative; height: 12px; background: var(--linea); border-radius: 4px; overflow: visible; }

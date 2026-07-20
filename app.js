@@ -159,16 +159,22 @@ function seleccionar(a) {
   $("v-pct").textContent = `${fmt(a.pred_pct)}%`;
   $("v-ic").textContent = `IC 90%: ${fmt(a.ic_lo)}% – ${fmt(a.ic_hi)}% · sobre ${a.n_pred} estudiantes con 1er parcial`;
   const comp = $("comparador");
+  comp.hidden = false;
+  $("bar-pred").style.width = `${a.pred_pct}%`;
+  $("bar-pred-v").textContent = `${fmt(a.pred_pct)}%`;
+  const w = $("whisker");
+  w.style.left = `${a.ic_lo}%`;
+  w.style.width = `${Math.max(0, a.ic_hi - a.ic_lo)}%`;
+  const barReal = $("bar-real"), barRealV = $("bar-real-v");
   if (d.cerrado && a.real_pct != null) {
-    comp.hidden = false;
-    $("bar-pred").style.width = `${a.pred_pct}%`;
-    $("bar-pred-v").textContent = `${fmt(a.pred_pct)}%`;
-    $("bar-real").style.width = `${a.real_pct}%`;
-    $("bar-real-v").textContent = `${fmt(a.real_pct)}%`;
-    const w = $("whisker");
-    w.style.left = `${a.ic_lo}%`;
-    w.style.width = `${Math.max(0, a.ic_hi - a.ic_lo)}%`;
-  } else comp.hidden = true;
+    barReal.style.width = `${a.real_pct}%`;
+    barRealV.textContent = `${fmt(a.real_pct)}%`;
+    barRealV.classList.remove("pendiente");
+  } else {
+    barReal.style.width = "0";
+    barRealV.textContent = "pendiente de recibir información";
+    barRealV.classList.add("pendiente");
+  }
 
   // tile 2: aprobados
   $("lbl-aprob-tipo").textContent = d.cerrado ? "(esperados vs reales)" : "(esperados)";
