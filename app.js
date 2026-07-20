@@ -177,15 +177,15 @@ function seleccionar(a) {
   const w = $("whisker");
   w.style.left = `${a.ic_lo}%`;
   w.style.width = `${Math.max(0, a.ic_hi - a.ic_lo)}%`;
-  const barReal = $("bar-real"), barRealV = $("bar-real-v");
+  const barReal = $("bar-real"), barRealV = $("bar-real-v"), filaReal = $("fila-real");
   if (d.cerrado && a.real_pct != null) {
+    filaReal.classList.remove("sin-dato");
     barReal.style.width = `${a.real_pct}%`;
     barRealV.textContent = `${fmt(a.real_pct)}%`;
-    barRealV.classList.remove("pendiente");
   } else {
+    filaReal.classList.add("sin-dato");
     barReal.style.width = "0";
     barRealV.textContent = "pendiente de recibir información";
-    barRealV.classList.add("pendiente");
   }
 
   // tile 2: aprobados
