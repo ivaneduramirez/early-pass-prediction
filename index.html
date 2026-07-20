@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Predicción temprana de aprobación — demo (datos anonimizados)</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="cabecera">
+  <h1>Predicción temprana de aprobación por asignatura</h1>
+  <p class="sub">Al cerrar el <strong>primer parcial</strong>, el modelo estima cuántos estudiantes aprobarán
+    al final del período — y con ello cuántos habrá que atender el período siguiente.
+    Demo con datos reales <strong>anonimizados</strong> (sin nombres; cédulas enmascaradas).</p>
+</header>
+
+<section class="controles" aria-label="Filtros">
+  <label>Período académico
+    <select id="sel-periodo"></select>
+  </label>
+  <label>Carrera
+    <select id="sel-carrera"></select>
+  </label>
+  <label class="buscador">Asignatura
+    <input id="inp-asig" type="text" placeholder="Escribe para buscar…" autocomplete="off"
+           role="combobox" aria-expanded="false" aria-controls="lista-asig">
+    <ul id="lista-asig" role="listbox" hidden></ul>
+  </label>
+</section>
+
+<div id="aviso-periodo" class="aviso" hidden></div>
+<div id="aviso-carga" class="aviso alerta" hidden></div>
+
+<main id="panel" hidden>
+  <div class="titulo-asig">
+    <h2 id="t-asig"></h2>
+    <p id="t-meta" class="sub"></p>
+  </div>
+
+  <section class="tiles" aria-label="Indicadores">
+    <article class="tile">
+      <h3>% de aprobación final <span id="lbl-pred-tipo"></span></h3>
+      <p class="hero" id="v-pct"></p>
+      <p class="detalle" id="v-ic"></p>
+      <div id="comparador" class="comparador" hidden>
+        <div class="barra-fila">
+          <span class="etq">predicho</span>
+          <div class="pista"><div class="barra pred" id="bar-pred"></div><span class="whisker" id="whisker"></span></div>
+          <span class="val" id="bar-pred-v"></span>
+        </div>
+        <div class="barra-fila">
+          <span class="etq">real</span>
+          <div class="pista"><div class="barra real" id="bar-real"></div></div>
+          <span class="val" id="bar-real-v"></span>
+        </div>
+      </div>
+    </article>
+
+    <article class="tile">
+      <h3>Estudiantes aprobados <span id="lbl-aprob-tipo"></span></h3>
+      <p class="hero" id="v-aprob"></p>
+      <p class="detalle" id="v-aprob-det"></p>
+    </article>
+
+    <article class="tile">
+      <h3>Reprobados en el período anterior (<span id="lbl-prev"></span>)</h3>
+      <p class="hero" id="v-reprob-prev"></p>
+      <p class="detalle" id="v-reprob-prev-det"></p>
+    </article>
+
+    <article class="tile destacado">
+      <h3>Previstos para el próximo período (<span id="lbl-next"></span>)</h3>
+      <p class="hero" id="v-previstos"></p>
+      <p class="detalle" id="v-previstos-det"></p>
+    </article>
+  </section>
+
+  <aside class="pitch">
+    <strong>¿Por qué importa?</strong> Esta estimación existe <em>meses antes del cierre del período</em>:
+    permite planificar paralelos, cupos y carga docente del siguiente período con anticipación,
+    en lugar de reaccionar cuando ya cerraron las actas. En los períodos cerrados de esta demo puedes
+    comparar lo que el modelo predijo (usando solo el primer parcial) contra lo que realmente ocurrió.
+  </aside>
+
+  <section class="tabla-seccion">
+    <h3>Estudiantes <span class="sub-inline" id="t-tabla-nota"></span></h3>
+    <div class="tabla-scroll">
+      <table id="tabla-est">
+        <thead>
+          <tr><th>Cédula (anonimizada)</th><th>Nota 1er parcial</th><th>Prob. de aprobar</th><th>Estado final</th><th></th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer class="pie">
+  <p>Modelo: gradient boosting sobre notas del 1er parcial + contexto del curso + tasa histórica de la asignatura + nivel.
+     Validado con backtest rodante en 10 períodos (2021-1 → 2025-2): error mediano 1.1 pp por asignatura, 82% de asignaturas dentro de ±5 pp;
+     ±0.6 pp a nivel institucional. Previstos del próximo período = nuevos actuales + reprobados esperados × 0.49
+     (tasa de rematrícula medida). Los períodos cerrados se predicen con modelos entrenados únicamente con ciclos anteriores.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
