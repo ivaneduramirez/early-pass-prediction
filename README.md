@@ -34,10 +34,21 @@ Validación: backtest rodante sobre 10 períodos académicos (2021-1 → 2025-2)
 
 Hallazgo colateral del análisis: la tasa de aprobación es una **propiedad estable de la asignatura**, no del docente que la dicta — ni la identidad del profesor ni su continuidad aportan poder predictivo una vez incluida la historia de la asignatura.
 
+## Documentación
+
+En [`docs/`](docs/): guía de uso del modelo, metodología y resultados, y guion de presentación.
+
+- [docs/USO_MODELO.md](docs/USO_MODELO.md) — cómo usar el predictor (CLI y API), interpretación y mantenimiento.
+- [docs/RESULTADOS.md](docs/RESULTADOS.md) — metodología, validación y resultados, con figuras.
+- [docs/PRESENTACION.md](docs/PRESENTACION.md) — guion de presentación.
+
 ## Estructura
 
 - `index.html`, `app.js`, `styles.css` — interfaz (vanilla JS, sin dependencias).
 - `data/periodo_*.json` — datos anonimizados precalculados por período.
 - `data/indice.json` — índice de períodos.
+- `docs/` — documentación del proyecto y figuras.
+
+El pipeline de entrenamiento (`*.py`), los modelos (`*.joblib`) y los datos crudos no se incluyen en este repositorio.
 
 Para servirla localmente: `python3 -m http.server 8000` en esta carpeta y abrir `http://localhost:8000`.
